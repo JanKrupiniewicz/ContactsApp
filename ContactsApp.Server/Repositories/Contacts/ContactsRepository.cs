@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ContactsApp.Server.Repositories.Contacts
 {
-    public class ContactRepository : IContactRepository
+    public class ContactsRepository : IContactsRepository
     {
         private readonly DataContext _context;
 
-        public ContactRepository(DataContext context)
+        public ContactsRepository(DataContext context)
         {
             _context = context;
         }

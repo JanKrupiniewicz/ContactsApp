@@ -5,12 +5,12 @@ using ContactsApp.Server.Repositories.Contacts;
 
 namespace ContactsApp.Server.Services.Contacts
 {
-    public class ContactService : IContactService
+    public class ContactsService : IContactsService
     {
-        private readonly IContactRepository _repository;
+        private readonly IContactsRepository _repository;
         private readonly IMapper _mapper;
 
-        public ContactService(IContactRepository repository, IMapper mapper)
+        public ContactsService(IContactsRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

@@ -2,7 +2,7 @@
 
 namespace ContactsApp.Server.Services.Contacts
 {
-    public interface IContactService
+    public interface IContactsService
     {
         Task<List<ContactsCollectionDto>> GetAllContactsAsync();
         Task<ContactsDetailedDto?> GetContactByIdAsync(int id);

@@ -2,8 +2,8 @@
 {
     public class ContactsCollectionDto
     {
-        private int Id { get; set; }
-        private string FirstName { get; set; } = "";
-        private string LastName { get; set; } = "";
+        public int Id { get; set; }
+        public string FirstName { get; set; } = "";
+        public string LastName { get; set; } = "";
     }
 }

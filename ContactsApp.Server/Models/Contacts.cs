@@ -4,30 +4,30 @@ namespace ContactsApp.Server.Models
 {
     public class Contacts
     {
-        private int Id { get; set; }
+        [Key]
+        public int Id { get; set; }
         [Required]
-        private string FirstName { get; set; } = "";
+        public string FirstName { get; set; } = "";
 
         [Required]
-        private string LastName { get; set; } = "";
+        public string LastName { get; set; } = "";
 
         [Required, EmailAddress]
-        private string Email { get; set; } = "";
+        public string Email { get; set; } = "";
 
         [Required]
-        private string Password { get; set; } = "";
+        public string Password { get; set; } = "";
 
         [Phone]
-        private string Phone { get; set; } = "";
+        public string Phone { get; set; } = "";
 
-        private DateTime BirthDate { get; set; }
+        public DateTime BirthDate { get; set; }
 
         [Required]
-        private string Category { get; set; } = ""; // służbowy, prywatny, inny
+        public string Category { get; set; } = ""; // służbowy, prywatny, inny
 
-        private string? Subcategory { get; set; }
+        public string? Subcategory { get; set; } // szef, klient, kolega, rodzina, inny
 
-        private string? UserId { get; set; }
-
+        public string? UserId { get; set; }
     }
 }

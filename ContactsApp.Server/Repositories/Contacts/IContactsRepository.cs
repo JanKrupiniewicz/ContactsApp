@@ -1,6 +1,6 @@
 ﻿namespace ContactsApp.Server.Repositories.Contacts
 {
-    public interface IContactRepository
+    public interface IContactsRepository
     {
         Task<List<Models.Contacts>> GetAllContactsAsync();
         Task<Models.Contacts> GetContactByIdAsync(int id);

@@ -10,6 +10,7 @@ namespace ContactsApp.Server.Mappings
                 .ReverseMap();
             CreateMap<Models.Contacts, Dtos.Contacts.ContactsCollectionDto>()
                 .ReverseMap();
+            CreateMap<Models.Contacts, Dtos.Contacts.CreateContactsDto>().ReverseMap();
         }
     }
 }

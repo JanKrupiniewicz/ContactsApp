@@ -1,4 +1,6 @@
 using ContactsApp.Server.Data;
+using ContactsApp.Server.Repositories.Contacts;
+using ContactsApp.Server.Services.Contacts;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,9 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IContactsService, ContactsService>();
+builder.Services.AddScoped<IContactsRepository, ContactsRepository>();
 
 var app = builder.Build();
 
