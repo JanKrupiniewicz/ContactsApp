@@ -1,31 +1,53 @@
 ﻿
+using ContactsApp.Server.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace ContactsApp.Server.Repositories.Contacts
 {
     public class ContactRepository : IContactRepository
     {
-        public Task<Models.Contacts> AddContactAsync(Models.Contacts contact)
+        private readonly DataContext _context;
+
+        public ContactRepository(DataContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<bool> DeleteContactAsync(int id)
+        public async Task<List<Models.Contacts>> GetAllContactsAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Contacts.ToListAsync();
         }
 
-        public Task<List<Models.Contacts>> GetAllContactsAsync()
+        public async Task<Models.Contacts> GetContactByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Contacts.FindAsync(id);
         }
 
-        public Task<Models.Contacts> GetContactByIdAsync(int id)
+        public async Task<Models.Contacts> AddContactAsync(Models.Contacts contact)
         {
-            throw new NotImplementedException();
+            _context.Contacts.Add(contact);
+            await _context.SaveChangesAsync();
+            return contact;
         }
 
-        public Task<Models.Contacts> UpdateContactAsync(Models.Contacts contact)
+        public async Task<Models.Contacts> UpdateContactAsync(Models.Contacts contact)
         {
-            throw new NotImplementedException();
+            _context.Contacts.Update(contact);
+            await _context.SaveChangesAsync();
+            return contact;
         }
+
+        public async Task<bool> DeleteContactAsync(int id)
+        {
+            var contact = await _context.Contacts.FindAsync(id);
+            if (contact == null)
+            {
+                return false;
+            }
+            _context.Contacts.Remove(contact);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
     }
 }

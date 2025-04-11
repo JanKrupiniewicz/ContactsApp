@@ -1,11 +1,13 @@
-﻿namespace ContactsApp.Server.Services.Contacts
+﻿using ContactsApp.Server.Dtos.Contacts;
+
+namespace ContactsApp.Server.Services.Contacts
 {
     public interface IContactService
     {
-        Task<List<ContactsApp.Server.Models.Contacts>> GetAllContactsAsync();
-        Task<ContactsApp.Server.Models.Contacts> GetContactByIdAsync(int id);
-        Task<ContactsApp.Server.Models.Contacts> AddContactAsync(ContactsApp.Server.Models.Contacts contact);
-        Task<ContactsApp.Server.Models.Contacts> UpdateContactAsync(ContactsApp.Server.Models.Contacts contact);
+        Task<List<ContactsCollectionDto>> GetAllContactsAsync();
+        Task<ContactsDetailedDto?> GetContactByIdAsync(int id);
+        Task<ContactsDetailedDto> AddContactAsync(ContactsDetailedDto contact);
+        Task<ContactsDetailedDto?> UpdateContactAsync(ContactsDetailedDto contact);
         Task<bool> DeleteContactAsync(int id);
     }
 }

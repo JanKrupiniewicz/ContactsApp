@@ -7,5 +7,6 @@ namespace ContactsApp.Server.Controllers
     [ApiController]
     public class ContactsController : ControllerBase
     {
+        
     }
 }
