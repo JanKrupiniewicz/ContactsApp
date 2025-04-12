@@ -1,4 +1,7 @@
-﻿using ContactsApp.Server.Models;
+﻿using AutoMapper;
+using ContactsApp.Server.Dtos.Users;
+using ContactsApp.Server.Models;
+using ContactsApp.Server.Repositories.Users;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -6,13 +9,42 @@ using System.Text;
 
 namespace ContactsApp.Server.Services.Auth
 {
-    public class AuthService
+    public class AuthService : IAuthService
     {
+        private readonly IUsersRepository _userRepository;
         private readonly IConfiguration _config;
+        private readonly IMapper _mapper;
 
-        public AuthService(IConfiguration config)
+        public AuthService(IUsersRepository userRepository, IConfiguration config, IMapper mapper)
         {
+            _userRepository = userRepository;
             _config = config;
+            _mapper = mapper;
+        }
+
+        public async Task<(bool IsSuccess, string? ErrorMessage)> RegisterAsync(RegisterUserDto registerDto)
+        {
+            var existingUser = await _userRepository.GetByEmailAsync(registerDto.Email);
+            if (existingUser != null)
+                return (false, "Email already in use.");
+
+            var user = _mapper.Map<Users>(registerDto);
+            user.Password = BCrypt.Net.BCrypt.HashPassword(registerDto.Password);
+
+            await _userRepository.AddUserAsync(user);
+            await _userRepository.SaveChangesAsync();
+
+            return (true, null);
+        }
+
+        public async Task<(string? Token, string? ErrorMessage)> LoginAsync(LoginUserDto loginDto)
+        {
+            var user = await _userRepository.GetByEmailAsync(loginDto.Email);
+            if (user == null || !BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password))
+                return (null, "Invalid credentials");
+
+            var token = GenerateJwtToken(user);
+            return (token, null);
         }
 
         public string GenerateJwtToken(Users user)

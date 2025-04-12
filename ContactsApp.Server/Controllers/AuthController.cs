@@ -14,31 +14,19 @@ namespace ContactsApp.Server.Controllers
     [Route("api/[controller]")]
     public class AuthController : Controller
     {
-        private readonly DataContext _context;
-        private readonly IConfiguration _config;
+        private readonly IAuthService _authService;
 
-        public AuthController(DataContext context, IConfiguration config)
+        public AuthController(IAuthService authService)
         {
-            _context = context;
-            _config = config;
+            _authService = authService;
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterUserDto registerUser)
         {
-            var userExists = await _context.Users.FirstOrDefaultAsync(u => u.Email == registerUser.Email);
-            if (userExists != null)
-                return BadRequest("Email already in use.");
-
-            var user = new Users
-            {
-                Username = registerUser.Username,
-                Email = registerUser.Email,
-                Password = BCrypt.Net.BCrypt.HashPassword(registerUser.Password),
-            };
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            var result = await _authService.RegisterAsync(registerUser);
+            if (!result.IsSuccess)
+                return BadRequest(result.ErrorMessage);
 
             return Ok("User registered successfully");
         }
@@ -46,13 +34,11 @@ namespace ContactsApp.Server.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUserDto loginUser)
         {
-            var userExists = await _context.Users.FirstOrDefaultAsync(u => u.Email == loginUser.Email);
+            var result = await _authService.LoginAsync(loginUser);
+            if (result.Token == null)
+                return Unauthorized(result.ErrorMessage);
 
-            if (userExists == null || !BCrypt.Net.BCrypt.Verify(loginUser.Password, userExists.Password))
-                return Unauthorized("Invalid credentials");
-
-            var token = new AuthService(_config).GenerateJwtToken(userExists);
-            return Ok(new { token });
+            return Ok(new { token = result.Token });
         }
     }
 }

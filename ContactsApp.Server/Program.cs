@@ -1,5 +1,8 @@
 using ContactsApp.Server.Data;
+using ContactsApp.Server.Mappings;
 using ContactsApp.Server.Repositories.Contacts;
+using ContactsApp.Server.Repositories.Users;
+using ContactsApp.Server.Services.Auth;
 using ContactsApp.Server.Services.Contacts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +25,8 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddScoped<IContactsService, ContactsService>();
 builder.Services.AddScoped<IContactsRepository, ContactsRepository>();
 
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 
 builder.Services.AddAuthentication(options =>
 {
