@@ -18,6 +18,13 @@ namespace ContactsApp.Server.Repositories.Contacts
             return await _context.Contacts.ToListAsync();
         }
 
+        public async Task<List<Models.Contacts>> GetUserContactsAsync(int userId)
+        {
+            return await _context.Contacts
+                .Where(c => int.Parse(c.UserId) == userId)
+                .ToListAsync();
+        }
+
         public async Task<Models.Contacts> GetContactByIdAsync(int id)
         {
             return await _context.Contacts.FindAsync(id);

@@ -22,6 +22,12 @@ namespace ContactsApp.Server.Services.Contacts
             return _mapper.Map<List<ContactsCollectionDto>>(contacts);
         }
 
+        public async Task<List<ContactsCollectionDto>> GetUserContactsAsync(int userId)
+        {
+            var contacts = await _repository.GetUserContactsAsync(userId);
+            return _mapper.Map<List<ContactsCollectionDto>>(contacts);
+        }
+
         public async Task<ContactsDetailedDto?> GetContactByIdAsync(int id)
         {
             var contact = await _repository.GetContactByIdAsync(id);
