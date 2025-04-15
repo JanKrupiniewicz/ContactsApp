@@ -5,6 +5,11 @@ import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
 import NotFoundPage from "./pages/not-found";
 import "./index.css";
+import ContactsPage from "./pages/contacts";
+import { AuthProvider } from "./providers/auth-provider";
+import ContactForm from "./pages/contact-form";
+import ContactEditForm from "./pages/contact-edit-form";
+import ContactDetailsPage from "./pages/contact-detailes";
 
 const router = createBrowserRouter([
   {
@@ -20,10 +25,28 @@ const router = createBrowserRouter([
     path: "/register",
     element: <RegisterPage />,
   },
+  {
+    path: "/contacts",
+    element: <ContactsPage />,
+  },
+  {
+    path: "/contacts/detailed/:id",
+    element: <ContactDetailsPage />,
+  },
+  {
+    path: "/contacts/add",
+    element: <ContactForm />,
+  },
+  {
+    path: "/contacts/edit/:id",
+    element: <ContactEditForm />,
+  },
 ]);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>
 );

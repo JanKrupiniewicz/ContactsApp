@@ -21,7 +21,7 @@ namespace ContactsApp.Server.Repositories.Contacts
         public async Task<List<Models.Contacts>> GetUserContactsAsync(int userId)
         {
             return await _context.Contacts
-                .Where(c => int.Parse(c.UserId) == userId)
+                .Where(c => c.UserId == userId)
                 .ToListAsync();
         }
 

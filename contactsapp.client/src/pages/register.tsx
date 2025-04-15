@@ -1,14 +1,20 @@
 import { useState } from "react";
-import { useAuth } from "../providers/authProvider";
-import { redirect } from "react-router-dom";
+import { useAuth } from "../providers/auth-provider";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const RegisterPage = () => {
   const { register } = useAuth();
   const [form, setForm] = useState({ username: "", email: "", password: "" });
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
-  if (useAuth().isAuthenticated()) {
-    redirect("/login");
-  }
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigate("/");
+      return;
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

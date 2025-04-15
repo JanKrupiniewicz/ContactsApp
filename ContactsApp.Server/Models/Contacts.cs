@@ -28,6 +28,7 @@ namespace ContactsApp.Server.Models
 
         public string? Subcategory { get; set; } // szef, klient, kolega, rodzina, inny
 
-        public string? UserId { get; set; }
+        [Required]
+        public int UserId { get; set; }
     }
 }
