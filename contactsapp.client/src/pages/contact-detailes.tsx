@@ -23,6 +23,9 @@ const ContactDetailsPage = () => {
 
       try {
         const data = await getContactById(Number.parseInt(id));
+
+        console.log("Fetched contact:", data);
+
         setContact(data);
         setLoading(false);
       } catch (err) {

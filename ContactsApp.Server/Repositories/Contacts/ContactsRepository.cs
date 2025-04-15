@@ -15,19 +15,18 @@ namespace ContactsApp.Server.Repositories.Contacts
 
         public async Task<List<Models.Contacts>> GetAllContactsAsync()
         {
-            return await _context.Contacts.ToListAsync();
+            return await _context.Contacts.Include(c => c.Category).Include(c => c.Subcategory).ToListAsync();
         }
 
         public async Task<List<Models.Contacts>> GetUserContactsAsync(int userId)
         {
             return await _context.Contacts
-                .Where(c => c.UserId == userId)
-                .ToListAsync();
+                .Where(c => c.UserId == userId).Include(c => c.Category).Include(c => c.Subcategory).ToListAsync();
         }
 
         public async Task<Models.Contacts> GetContactByIdAsync(int id)
         {
-            return await _context.Contacts.FindAsync(id);
+            return await _context.Contacts.Include(c => c.Category).Include(c => c.Subcategory).FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<Models.Contacts> AddContactAsync(Models.Contacts contact)

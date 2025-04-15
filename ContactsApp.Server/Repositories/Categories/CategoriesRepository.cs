@@ -14,5 +14,19 @@ namespace ContactsApp.Server.Repositories.Categories
         {
             return await _context.Categories.Include(c => c.Subcategories).ToListAsync();
         }
+
+        public async Task<Models.Categories?> GetCategoryByNameAsync(string categoryName)
+        {
+            return await _context.Categories
+                .Include(c => c.Subcategories)
+                .FirstOrDefaultAsync(c => c.Name == categoryName);
+        }
+
+        public async Task<Models.Subcategories?> GetSubcategoryByNameAsync(string subcategoryName)
+        {
+            return await _context.Subcategories
+                .Include(s => s.Category)
+                .FirstOrDefaultAsync(s => s.Name == subcategoryName);
+        }
     }
 }

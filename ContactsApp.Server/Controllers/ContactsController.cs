@@ -44,11 +44,20 @@ namespace ContactsApp.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<ContactsDetailedDto>> AddContact(CreateContactsDto contact)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-            contact.UserId = int.Parse(userId);
 
-            var addedContact = await _contactService.AddContactAsync(contact);
-            return CreatedAtAction(nameof(GetContactById), new { id = addedContact.Id }, addedContact);
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+                contact.UserId = int.Parse(userId);
+
+                var addedContact = await _contactService.AddContactAsync(contact);
+                return CreatedAtAction(nameof(GetContactById), new { id = addedContact.Id }, addedContact);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpPut("{id}")]

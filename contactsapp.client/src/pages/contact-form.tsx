@@ -1,19 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect, use } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../providers/auth-provider";
 import { CreateContact } from "../types/contacts";
 import { createContact } from "../api/contacts";
-import { CATEGORIES, BUSINESS_SUBCATEGORIES } from "../constants/categories";
 import { validatePassword } from "../utils/validation";
+import { Category } from "../types/categories";
+import CategorySelector from "../components/category-selector";
+import { getAllCategories } from "../api/categories";
 
 const ContactForm = () => {
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
+  const [error, setError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [categories, setCategories] = useState<Category[]>();
+  const [loading, setLoading] = useState(true);
 
-  if (!isAuthenticated()) {
-    navigate("/login");
-    return null;
-  }
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
+
+    const fetchCategories = async () => {
+      try {
+        const data = await getAllCategories();
+        console.log("Fetched categories:", data);
+
+        setCategories(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Failed to fetch categories", error);
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, [isAuthenticated, navigate]);
 
   const [formData, setFormData] = useState<CreateContact>({
     firstName: "",
@@ -26,9 +49,6 @@ const ContactForm = () => {
     subcategory: "",
     userId: user?.userId || 0,
   });
-
-  const [error, setError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -69,11 +89,14 @@ const ContactForm = () => {
     try {
       const contactData = {
         ...formData,
-        userId: 0,
+        userId: user?.userId || 0,
         dateOfBirth: formData.dateOfBirth
           ? new Date(formData.dateOfBirth).toISOString()
           : undefined,
       };
+
+      console.log("User: ", user);
+      console.log("Contact data to be created:", contactData);
 
       await createContact(contactData);
       navigate("/contacts");
@@ -81,6 +104,10 @@ const ContactForm = () => {
       setError("Failed to create contact");
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
@@ -159,54 +186,13 @@ const ContactForm = () => {
           onChange={handleChange}
         />
 
-        <label htmlFor="category">Category *</label>
-        <select
-          id="category"
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          required
-        >
-          {CATEGORIES.map((category) => (
-            <option key={category} value={category}>
-              {category.charAt(0).toUpperCase() + category.slice(1)}
-            </option>
-          ))}
-        </select>
-
-        {formData.category === "business" && (
-          <>
-            <label htmlFor="subcategory">Subcategory *</label>
-            <select
-              id="subcategory"
-              name="subcategory"
-              value={formData.subcategory}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select a subcategory</option>
-              {BUSINESS_SUBCATEGORIES.map((subcategory) => (
-                <option key={subcategory} value={subcategory}>
-                  {subcategory.charAt(0).toUpperCase() + subcategory.slice(1)}
-                </option>
-              ))}
-            </select>
-          </>
-        )}
-
-        {formData.category === "other" && (
-          <>
-            <label htmlFor="subcategory">Subcategory *</label>
-            <input
-              type="text"
-              id="subcategory"
-              name="subcategory"
-              value={formData.subcategory}
-              onChange={handleChange}
-              required
-            />
-          </>
-        )}
+        <CategorySelector
+          categories={categories}
+          selectedCategory={formData.category}
+          selectedSubcategory={formData.subcategory}
+          onCategoryChange={handleChange}
+          onSubcategoryChange={handleChange}
+        />
         <Link to="/contacts">Cancel</Link>
         <button type="submit">Save Contact</button>
       </form>

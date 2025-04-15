@@ -3,12 +3,15 @@ import { useNavigate, Link, useParams } from "react-router-dom";
 import { useAuth } from "../providers/auth-provider";
 import { ContactsDetailed } from "../types/contacts";
 import { getContactById, updateContact } from "../api/contacts";
-import { CATEGORIES, BUSINESS_SUBCATEGORIES } from "../constants/categories";
+import CategorySelector from "../components/category-selector";
+import { Category } from "../types/categories";
+import { getAllCategories } from "../api/categories";
 
 const ContactsEditForm = () => {
   const { id } = useParams<{ id: string }>();
   const { isAuthenticated, user } = useAuth();
   const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState<Category[]>();
   const navigate = useNavigate();
 
   // Store the original contact data in state
@@ -23,8 +26,8 @@ const ContactsEditForm = () => {
     password: "",
     phoneNumber: "",
     dateOfBirth: "",
-    category: "private",
-    subcategory: "",
+    category: originalContact?.category || "private",
+    subcategory: originalContact?.subcategory || "",
     userId: user?.userId || 0,
   });
 
@@ -64,6 +67,20 @@ const ContactsEditForm = () => {
       }
     };
 
+    const fetchCategories = async () => {
+      try {
+        const data = await getAllCategories();
+        console.log("Fetched categories:", data);
+
+        setCategories(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Failed to fetch categories", error);
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
     fetchContact();
   }, [id, isAuthenticated, navigate, user]);
 
@@ -124,6 +141,10 @@ const ContactsEditForm = () => {
       };
 
       await updateContact(contactData);
+
+      console.log("User: ", user);
+      console.log("Contact data to be created:", contactData);
+
       navigate("/contacts");
     } catch (err) {
       setError("Failed to update contact");
@@ -210,54 +231,14 @@ const ContactsEditForm = () => {
           onChange={handleChange}
         />
 
-        <label htmlFor="category">Category</label>
-        <select
-          id="category"
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          required
-        >
-          {CATEGORIES.map((category) => (
-            <option key={category} value={category}>
-              {category.charAt(0).toUpperCase() + category.slice(1)}
-            </option>
-          ))}
-        </select>
+        <CategorySelector
+          categories={categories}
+          selectedCategory={formData.category}
+          selectedSubcategory={formData.subcategory}
+          onCategoryChange={handleChange}
+          onSubcategoryChange={handleChange}
+        />
 
-        {formData.category === "business" && (
-          <>
-            <label htmlFor="subcategory">Subcategory</label>
-            <select
-              id="subcategory"
-              name="subcategory"
-              value={formData.subcategory}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select a subcategory</option>
-              {BUSINESS_SUBCATEGORIES.map((subcategory) => (
-                <option key={subcategory} value={subcategory}>
-                  {subcategory.charAt(0).toUpperCase() + subcategory.slice(1)}
-                </option>
-              ))}
-            </select>
-          </>
-        )}
-
-        {formData.category === "other" && (
-          <>
-            <label htmlFor="subcategory">Subcategory</label>
-            <input
-              type="text"
-              id="subcategory"
-              name="subcategory"
-              value={formData.subcategory}
-              onChange={handleChange}
-              required
-            />
-          </>
-        )}
         <Link to="/contacts">Cancel</Link>
         <button type="submit">Save Contact</button>
       </form>
