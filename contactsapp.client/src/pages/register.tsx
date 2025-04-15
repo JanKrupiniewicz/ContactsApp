@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../providers/auth-provider";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const RegisterPage = () => {
   const { register } = useAuth();
@@ -27,28 +28,34 @@ const RegisterPage = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        placeholder="Username"
-        value={form.username}
-        onChange={(e) => setForm({ ...form, username: e.target.value })}
-        required
-      />
-      <input
-        placeholder="Email"
-        value={form.email}
-        onChange={(e) => setForm({ ...form, email: e.target.value })}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={form.password}
-        onChange={(e) => setForm({ ...form, password: e.target.value })}
-        required
-      />
-      <button type="submit">Register</button>
-    </form>
+    <div>
+      <h1>Register</h1>
+      <p>
+        Already have an account? <Link to="/login">Login</Link>
+      </p>
+      <form onSubmit={handleSubmit}>
+        <input
+          placeholder="Username"
+          value={form.username}
+          onChange={(e) => setForm({ ...form, username: e.target.value })}
+          required
+        />
+        <input
+          placeholder="Email"
+          value={form.email}
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
+          required
+        />
+        <button type="submit">Register</button>
+      </form>
+    </div>
   );
 };
 

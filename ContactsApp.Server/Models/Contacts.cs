@@ -19,9 +19,9 @@ namespace ContactsApp.Server.Models
         public string Password { get; set; } = "";
 
         [Phone]
-        public string Phone { get; set; } = "";
+        public string PhoneNumber { get; set; } = "";
 
-        public DateTime BirthDate { get; set; }
+        public DateTime? DateOfBirth { get; set; }
 
         [Required]
         public string Category { get; set; } = ""; // służbowy, prywatny, inny

@@ -33,7 +33,7 @@ namespace ContactsApp.Server.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
             var contact = await _contactService.GetContactByIdAsync(id);
 
-            if (contact == null || contact.UserId != userId)
+            if (contact == null || contact.UserId != int.Parse(userId))
             {
                 return NotFound(); // contact not found or not owned by user
             }
@@ -45,7 +45,7 @@ namespace ContactsApp.Server.Controllers
         public async Task<ActionResult<ContactsDetailedDto>> AddContact(ContactsDetailedDto contact)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-            contact.UserId = userId;
+            contact.UserId = int.Parse(userId);
 
             var addedContact = await _contactService.AddContactAsync(contact);
             return CreatedAtAction(nameof(GetContactById), new { id = addedContact.Id }, addedContact);
@@ -62,12 +62,12 @@ namespace ContactsApp.Server.Controllers
             }
 
             var existing = await _contactService.GetContactByIdAsync(id);
-            if (existing == null || existing.UserId != userId)
+            if (existing == null || existing.UserId != int.Parse(userId))
             {
                 return NotFound();
             }
 
-            contact.UserId = userId; // ensure assignment
+            contact.UserId = int.Parse(userId); // ensure assignment
             var updatedContact = await _contactService.UpdateContactAsync(contact);
             return Ok(updatedContact);
         }
@@ -78,7 +78,7 @@ namespace ContactsApp.Server.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
             var contact = await _contactService.GetContactByIdAsync(id);
-            if (contact == null || contact.UserId != userId)
+            if (contact == null || contact.UserId != int.Parse(userId))
             { 
                 return NotFound();
             }

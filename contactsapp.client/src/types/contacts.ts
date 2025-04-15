@@ -1,18 +1,27 @@
-export interface Contact {
+export interface ContactsDetailed {
   id: number;
   firstName: string;
   lastName: string;
   email: string;
   phoneNumber: string;
-  address: string;
-  dateOfBirth: string;
-  notes: string;
-  userId: string;
+  DateOfBirth: string;
+  userId: number;
   category: string;
-  subcategory: string;
+  subcategory?: string;
 }
 
-export interface ContactListItem {
+export interface CreateContact {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  DateOfBirth: string;
+  userId: number;
+  category: string;
+  subcategory?: string;
+}
+
+export interface ContactList {
   id: number;
   firstName: string;
   lastName: string;

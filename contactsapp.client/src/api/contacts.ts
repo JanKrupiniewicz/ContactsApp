@@ -1,22 +1,26 @@
 import { apiClient } from "./api-client";
-import { Contact, ContactListItem } from "../types/contacts";
+import { ContactsDetailed, ContactList } from "../types/contacts";
 
-export const getAllContacts = async (): Promise<ContactListItem[]> => {
+export const getAllContacts = async (): Promise<ContactList[]> => {
   const response = await apiClient.get("/Contacts");
   return response.data;
 };
 
-export const getContactById = async (id: number): Promise<Contact> => {
+export const getContactById = async (id: number): Promise<ContactsDetailed> => {
   const response = await apiClient.get(`/Contacts/${id}`);
   return response.data;
 };
 
-export const createContact = async (contact: Contact): Promise<Contact> => {
+export const createContact = async (
+  contact: ContactsDetailed
+): Promise<ContactsDetailed> => {
   const response = await apiClient.post("/Contacts", contact);
   return response.data;
 };
 
-export const updateContact = async (contact: Contact): Promise<Contact> => {
+export const updateContact = async (
+  contact: ContactsDetailed
+): Promise<ContactsDetailed> => {
   const response = await apiClient.put(`/Contacts/${contact.id}`, contact);
   return response.data;
 };

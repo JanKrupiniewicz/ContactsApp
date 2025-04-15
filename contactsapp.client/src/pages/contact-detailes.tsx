@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { getContactById, deleteContact } from "../api/contacts";
 import { useAuth } from "../providers/auth-provider";
-import { Contact } from "../types/contacts";
+import { ContactsDetailed } from "../types/contacts";
 
 const ContactDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
-  const [contact, setContact] = useState<Contact | null>(null);
+  const [contact, setContact] = useState<ContactsDetailed | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const { isAuthenticated } = useAuth();
