@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { User, UserCredentials, UserRegistration } from "../types/types";
+import { User, UserCredentials, UserRegistration } from "../types/users";
 import { apiClient } from "../api/api-client";
 import { register } from "module";
 
@@ -24,16 +24,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = async (credentials: UserCredentials) => {
     const response = await apiClient.post("/Auth/login", credentials);
-    const { token, refreshToken } = response.data;
+    const { token, refreshToken, userId } = response.data;
 
     localStorage.setItem("accessToken", token);
     localStorage.setItem("refreshToken", refreshToken);
 
-    console.log("isAuthenticated", isAuthenticated());
-    console.log(localStorage.getItem("accessToken"));
-    console.log(localStorage.getItem("refreshToken"));
-
-    setUser({ email: credentials.email });
+    setUser({ userId: userId, email: credentials.email });
   };
 
   const logout = () => {
@@ -43,13 +39,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const register = async (credentials: UserRegistration) => {
-    const response = await apiClient.post("/Auth/register", credentials);
-    const { token, refreshToken } = response.data;
-
-    localStorage.setItem("accessToken", token);
-    localStorage.setItem("refreshToken", refreshToken);
-
-    setUser({ email: credentials.email });
+    await apiClient.post("/Auth/register", credentials);
   };
 
   const isAuthenticated = () => {

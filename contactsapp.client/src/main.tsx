@@ -7,9 +7,9 @@ import NotFoundPage from "./pages/not-found";
 import "./index.css";
 import ContactsPage from "./pages/contacts";
 import { AuthProvider } from "./providers/auth-provider";
-import ContactForm from "./pages/contact-form";
 import ContactEditForm from "./pages/contact-edit-form";
 import ContactDetailsPage from "./pages/contact-detailes";
+import ContactForm from "./pages/contact-form";
 
 const router = createBrowserRouter([
   {

@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../providers/auth-provider";
-import { Contact } from "../types/contacts";
+import { CreateContact } from "../types/contacts";
 import { createContact } from "../api/contacts";
-
-const CATEGORIES = ["business", "private", "other"];
-const BUSINESS_SUBCATEGORIES = ["boss", "client", "colleague"];
+import { CATEGORIES, BUSINESS_SUBCATEGORIES } from "../constants/categories";
+import { validatePassword } from "../utils/validation";
 
 const ContactForm = () => {
   const navigate = useNavigate();
@@ -16,21 +15,20 @@ const ContactForm = () => {
     return null;
   }
 
-  const [formData, setFormData] = useState<Contact>({
-    id: 0,
+  const [formData, setFormData] = useState<CreateContact>({
     firstName: "",
     lastName: "",
     email: "",
+    password: "",
     phoneNumber: "",
-    address: "",
     dateOfBirth: "",
-    notes: "",
-    userId: "",
-    category: "",
+    category: "private",
     subcategory: "",
+    userId: user?.userId || 0,
   });
 
   const [error, setError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -38,6 +36,17 @@ const ContactForm = () => {
     >
   ) => {
     const { name, value } = e.target;
+
+    if (name === "password") {
+      if (!validatePassword(value)) {
+        setPasswordError(
+          "Password must be at least 8 characters long and include uppercase, lowercase, and numbers"
+        );
+      } else {
+        setPasswordError("");
+      }
+    }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
 
     // Reset subcategory when category changes
@@ -50,11 +59,20 @@ const ContactForm = () => {
     e.preventDefault();
     setError("");
 
+    if (!validatePassword(formData.password)) {
+      setPasswordError(
+        "Password must be at least 8 characters long and include uppercase, lowercase, and numbers"
+      );
+      return;
+    }
+
     try {
       const contactData = {
         ...formData,
-        userId: "", // user?.userId
-        dateOfBirth: new Date(formData.dateOfBirth).toISOString(),
+        userId: 0,
+        dateOfBirth: formData.dateOfBirth
+          ? new Date(formData.dateOfBirth).toISOString()
+          : undefined,
       };
 
       await createContact(contactData);
@@ -85,6 +103,7 @@ const ContactForm = () => {
           onChange={handleChange}
           required
         />
+
         <label htmlFor="lastName">Last Name *</label>
         <input
           type="text"
@@ -94,6 +113,7 @@ const ContactForm = () => {
           onChange={handleChange}
           required
         />
+
         <label htmlFor="email">Email *</label>
         <input
           type="email"
@@ -103,6 +123,23 @@ const ContactForm = () => {
           onChange={handleChange}
           required
         />
+
+        <label htmlFor="password">Password *</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
+
+        {passwordError && (
+          <div style={{ color: "red", fontSize: "14px", marginTop: "5px" }}>
+            {passwordError}
+          </div>
+        )}
+
         <label htmlFor="phoneNumber">Phone Number *</label>
         <input
           type="tel"
@@ -113,29 +150,12 @@ const ContactForm = () => {
           required
         />
 
-        <label htmlFor="address">Address</label>
-        <input
-          type="text"
-          id="address"
-          name="address"
-          value={formData.address}
-          onChange={handleChange}
-        />
-
         <label htmlFor="dateOfBirth">Date of Birth</label>
         <input
           type="date"
           id="dateOfBirth"
           name="dateOfBirth"
           value={formData.dateOfBirth}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="notes">Notes</label>
-        <textarea
-          id="notes"
-          name="notes"
-          value={formData.notes}
           onChange={handleChange}
         />
 

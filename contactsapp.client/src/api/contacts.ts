@@ -1,5 +1,9 @@
 import { apiClient } from "./api-client";
-import { ContactsDetailed, ContactList } from "../types/contacts";
+import {
+  ContactsDetailed,
+  ContactList,
+  CreateContact,
+} from "../types/contacts";
 
 export const getAllContacts = async (): Promise<ContactList[]> => {
   const response = await apiClient.get("/Contacts");
@@ -12,7 +16,7 @@ export const getContactById = async (id: number): Promise<ContactsDetailed> => {
 };
 
 export const createContact = async (
-  contact: ContactsDetailed
+  contact: CreateContact
 ): Promise<ContactsDetailed> => {
   const response = await apiClient.post("/Contacts", contact);
   return response.data;
@@ -21,7 +25,12 @@ export const createContact = async (
 export const updateContact = async (
   contact: ContactsDetailed
 ): Promise<ContactsDetailed> => {
+  console.log(contact);
+
   const response = await apiClient.put(`/Contacts/${contact.id}`, contact);
+
+  console.log(response);
+
   return response.data;
 };
 

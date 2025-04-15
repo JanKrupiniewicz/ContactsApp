@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../providers/auth-provider";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { validatePassword } from "../utils/validation";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const { isAuthenticated, login } = useAuth();
   const navigate = useNavigate();
 
@@ -17,11 +18,16 @@ const LoginPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Handle submit");
+
+    if (!validatePassword(password)) {
+      setPasswordError(
+        "Password must be at least 8 characters long and include uppercase, lowercase, and numbers"
+      );
+      return;
+    }
 
     try {
       await login({ email, password });
-
       navigate("/contacts");
     } catch (err) {
       alert("Login failed");
@@ -50,6 +56,11 @@ const LoginPage = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+        {passwordError && (
+          <div style={{ color: "red", fontSize: "14px", marginTop: "5px" }}>
+            {passwordError}
+          </div>
+        )}
         <button type="submit">Login</button>
       </form>
     </div>

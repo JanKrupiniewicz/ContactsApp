@@ -37,14 +37,14 @@ namespace ContactsApp.Server.Services.Auth
             return (true, null);
         }
 
-        public async Task<(string? Token, string? ErrorMessage)> LoginAsync(LoginUserDto loginDto)
+        public async Task<(string? Token, string? ErrorMessage, int? userId)> LoginAsync(LoginUserDto loginDto)
         {
             var user = await _userRepository.GetByEmailAsync(loginDto.Email);
             if (user == null || !BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password))
-                return (null, "Invalid credentials");
+                return (null, "Invalid credentials", null);
 
             var token = GenerateJwtToken(user);
-            return (token, null);
+            return (token, null, user.Id);
         }
 
         public string GenerateJwtToken(Users user)

@@ -57,7 +57,7 @@ namespace ContactsApp.Server.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
             if (id != contact.Id)
-            { 
+            {
                 return BadRequest();
             }
 

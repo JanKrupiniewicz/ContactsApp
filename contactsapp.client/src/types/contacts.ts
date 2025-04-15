@@ -3,22 +3,24 @@ export interface ContactsDetailed {
   firstName: string;
   lastName: string;
   email: string;
+  password: string;
   phoneNumber: string;
-  DateOfBirth: string;
-  userId: number;
+  dateOfBirth?: string;
   category: string;
   subcategory?: string;
+  userId: number;
 }
 
 export interface CreateContact {
   firstName: string;
   lastName: string;
   email: string;
+  password: string;
   phoneNumber: string;
-  DateOfBirth: string;
-  userId: number;
+  dateOfBirth?: string;
   category: string;
   subcategory?: string;
+  userId: number;
 }
 
 export interface ContactList {

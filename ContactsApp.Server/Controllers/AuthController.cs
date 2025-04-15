@@ -38,7 +38,13 @@ namespace ContactsApp.Server.Controllers
             if (result.Token == null)
                 return Unauthorized(result.ErrorMessage);
 
-            return Ok(new { token = result.Token });
+            return Ok(
+                new
+                {
+                    Token = result.Token,
+                    UserId = result.userId
+                }
+            );
         }
     }
 }

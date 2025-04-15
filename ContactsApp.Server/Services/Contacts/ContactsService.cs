@@ -50,10 +50,9 @@ namespace ContactsApp.Server.Services.Contacts
             var existing = await _repository.GetContactByIdAsync(dto.Id);
             if (existing == null) return null;
 
-            var model = _mapper.Map<Models.Contacts>(dto);
-            var result = await _repository.UpdateContactAsync(model);
-            var updatedContact = _mapper.Map<ContactsDetailedDto>(result);
-            return updatedContact;
+            _mapper.Map(dto, existing);
+            var result = await _repository.UpdateContactAsync(existing);
+            return _mapper.Map<ContactsDetailedDto>(result);
         }
 
         public Task<bool> DeleteContactAsync(int id)

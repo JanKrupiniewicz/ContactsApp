@@ -1,13 +1,11 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../providers/auth-provider";
 import { getAllContacts } from "../api/contacts";
-import { ContactListItem } from "../types/contacts";
+import { ContactList } from "../types/contacts";
 
 const ContactsPage = () => {
-  const [contacts, setContacts] = useState<ContactListItem[]>([]);
+  const [contacts, setContacts] = useState<ContactList[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const { isAuthenticated, logout } = useAuth();
@@ -33,6 +31,11 @@ const ContactsPage = () => {
     fetchContacts();
   }, [isAuthenticated, navigate]);
 
+  const logoutHandler = () => {
+    logout();
+    navigate("/login");
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -43,7 +46,7 @@ const ContactsPage = () => {
         <h1>Contacts</h1>
         <div>
           <Link to="/contacts/add">Add Contact</Link>
-          <button onClick={logout}>Logout</button>
+          <button onClick={logoutHandler}>Logout</button>
         </div>
       </div>
 
@@ -66,7 +69,7 @@ const ContactsPage = () => {
                 <td>{contact.firstName}</td>
                 <td>{contact.lastName}</td>
                 <td>
-                  <Link to={`/contacts/${contact.id}`}>View</Link>
+                  <Link to={`/contacts/detailed/${contact.id}`}>View</Link>
                 </td>
               </tr>
             ))}
