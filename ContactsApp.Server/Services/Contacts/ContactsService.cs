@@ -1,6 +1,7 @@
 ﻿
 using AutoMapper;
 using ContactsApp.Server.Dtos.Contacts;
+using ContactsApp.Server.Models;
 using ContactsApp.Server.Repositories.Categories;
 using ContactsApp.Server.Repositories.Contacts;
 
@@ -59,13 +60,23 @@ namespace ContactsApp.Server.Services.Contacts
             if (category != null)
             {
                 model.Category = category;
-            }
 
-            if (!string.IsNullOrEmpty(dto.Subcategory))
-            {
-                var subcategory = await _categoriesRepository.GetSubcategoryByNameAsync(dto.Subcategory);
-                if (subcategory != null)
+                if (!string.IsNullOrWhiteSpace(dto.Subcategory))
                 {
+                    var subcategory = await _categoriesRepository.GetSubcategoryByNameAndCategoryIdAsync(dto.Subcategory, category.Id);
+
+                    if (subcategory == null)
+                    {
+                        // subkategoria nie istnieje — tworzymy nową
+                        var newSubcategory = new Subcategories
+                        {
+                            Name = dto.Subcategory,
+                            CategoryId = category.Id
+                        };
+
+                        subcategory = await _categoriesRepository.AddSubcategoryAsync(newSubcategory);
+                    }
+
                     model.Subcategory = subcategory;
                 }
             }
@@ -73,7 +84,6 @@ namespace ContactsApp.Server.Services.Contacts
             var result = await _repository.AddContactAsync(model);
 
             var addedContact = _mapper.Map<ContactsDetailedDto>(result);
-
             if (result.Category != null)
             {
                 addedContact.Category = result.Category.Name;
@@ -102,7 +112,20 @@ namespace ContactsApp.Server.Services.Contacts
 
             if (!string.IsNullOrEmpty(dto.Subcategory))
             {
-                var subcategory = await _categoriesRepository.GetSubcategoryByNameAsync(dto.Subcategory);
+                var subcategory = await _categoriesRepository.GetSubcategoryByNameAndCategoryIdAsync(dto.Subcategory, category.Id);
+
+                if (subcategory == null)
+                {
+                    // subkategoria nie istnieje — tworzymy nową
+                    var newSubcategory = new Subcategories
+                    {
+                        Name = dto.Subcategory,
+                        CategoryId = category.Id
+                    };
+
+                    subcategory = await _categoriesRepository.AddSubcategoryAsync(newSubcategory);
+                }
+
                 existing.Subcategory = subcategory;
             }
             else

@@ -1,4 +1,5 @@
 ﻿using ContactsApp.Server.Data;
+using ContactsApp.Server.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ContactsApp.Server.Repositories.Categories
@@ -22,11 +23,25 @@ namespace ContactsApp.Server.Repositories.Categories
                 .FirstOrDefaultAsync(c => c.Name == categoryName);
         }
 
-        public async Task<Models.Subcategories?> GetSubcategoryByNameAsync(string subcategoryName)
+        public async Task<Subcategories?> GetSubcategoryByNameAsync(string subcategoryName)
         {
             return await _context.Subcategories
                 .Include(s => s.Category)
                 .FirstOrDefaultAsync(s => s.Name == subcategoryName);
         }
+
+        public async Task<Subcategories> AddSubcategoryAsync(Subcategories subcategory)
+        {
+            _context.Subcategories.Add(subcategory);
+            await _context.SaveChangesAsync();
+            return subcategory;
+        }
+
+        public async Task<Subcategories?> GetSubcategoryByNameAndCategoryIdAsync(string name, int categoryId)
+        {
+            return await _context.Subcategories
+                .FirstOrDefaultAsync(s => s.Name == name && s.CategoryId == categoryId);
+        }
+
     }
 }

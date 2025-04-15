@@ -1,4 +1,5 @@
-﻿using ContactsApp.Server.Models;
+﻿using ContactsApp.Server.Dtos.Categories;
+using ContactsApp.Server.Models;
 using ContactsApp.Server.Services.Categories;
 using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.Asn1;
@@ -19,16 +20,8 @@ namespace ContactsApp.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Dtos.Categories.CategoriesDto>>> GetAllCategories()
         {
-            try
-            {
-                var categories = await _categoriesService.GetAllCategoriesAsync();
-                return Ok(categories);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error: " + ex.Message);
-                return StatusCode(500, "Internal server error");
-            }
+            var categories = await _categoriesService.GetAllCategoriesAsync();
+            return Ok(categories);
         }
     }
 }
