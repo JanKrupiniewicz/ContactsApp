@@ -42,7 +42,7 @@ namespace ContactsApp.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ContactsDetailedDto>> AddContact(ContactsDetailedDto contact)
+        public async Task<ActionResult<ContactsDetailedDto>> AddContact(CreateContactsDto contact)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
             contact.UserId = int.Parse(userId);

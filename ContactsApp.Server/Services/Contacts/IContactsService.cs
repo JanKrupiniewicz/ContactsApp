@@ -7,7 +7,7 @@ namespace ContactsApp.Server.Services.Contacts
         Task<List<ContactsCollectionDto>> GetAllContactsAsync();
         Task<List<ContactsCollectionDto>> GetUserContactsAsync(int userId);
         Task<ContactsDetailedDto?> GetContactByIdAsync(int id);
-        Task<ContactsDetailedDto> AddContactAsync(ContactsDetailedDto contact);
+        Task<ContactsDetailedDto> AddContactAsync(CreateContactsDto contact);
         Task<ContactsDetailedDto?> UpdateContactAsync(ContactsDetailedDto contact);
         Task<bool> DeleteContactAsync(int id);
     }

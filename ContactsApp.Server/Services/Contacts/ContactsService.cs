@@ -36,7 +36,7 @@ namespace ContactsApp.Server.Services.Contacts
             return _mapper.Map<ContactsDetailedDto>(contact);
         }
 
-        public async Task<ContactsDetailedDto> AddContactAsync(ContactsDetailedDto dto)
+        public async Task<ContactsDetailedDto> AddContactAsync(CreateContactsDto dto)
         {
             var model = _mapper.Map<Models.Contacts>(dto);
             var result = await _repository.AddContactAsync(model);
