@@ -25,12 +25,7 @@ export const createContact = async (
 export const updateContact = async (
   contact: ContactsDetailed
 ): Promise<ContactsDetailed> => {
-  console.log(contact);
-
   const response = await apiClient.put(`/Contacts/${contact.id}`, contact);
-
-  console.log(response);
-
   return response.data;
 };
 

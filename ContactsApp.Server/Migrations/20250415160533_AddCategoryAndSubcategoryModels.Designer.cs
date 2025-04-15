@@ -3,6 +3,7 @@ using System;
 using ContactsApp.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ContactsApp.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250415160533_AddCategoryAndSubcategoryModels")]
+    partial class AddCategoryAndSubcategoryModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.4");
@@ -30,23 +33,6 @@ namespace ContactsApp.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Private"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Business"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Other"
-                        });
                 });
 
             modelBuilder.Entity("ContactsApp.Server.Models.Contacts", b =>
@@ -87,13 +73,16 @@ namespace ContactsApp.Server.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("UsersId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("SubcategoryId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UsersId");
 
                     b.ToTable("Contacts");
                 });
@@ -116,38 +105,6 @@ namespace ContactsApp.Server.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Subcategories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryId = 2,
-                            Name = "advertising"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryId = 2,
-                            Name = "finance"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CategoryId = 2,
-                            Name = "marketing"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CategoryId = 2,
-                            Name = "sales"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CategoryId = 2,
-                            Name = "media"
-                        });
                 });
 
             modelBuilder.Entity("ContactsApp.Server.Models.Users", b =>
@@ -188,17 +145,13 @@ namespace ContactsApp.Server.Migrations
                         .WithMany()
                         .HasForeignKey("SubcategoryId");
 
-                    b.HasOne("ContactsApp.Server.Models.Users", "User")
+                    b.HasOne("ContactsApp.Server.Models.Users", null)
                         .WithMany("Contacts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UsersId");
 
                     b.Navigation("Category");
 
                     b.Navigation("Subcategory");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ContactsApp.Server.Models.Subcategories", b =>

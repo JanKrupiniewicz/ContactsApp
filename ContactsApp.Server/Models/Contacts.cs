@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ContactsApp.Server.Models
 {
@@ -23,12 +24,18 @@ namespace ContactsApp.Server.Models
 
         public DateTime? DateOfBirth { get; set; }
 
+        [ForeignKey("Category")]
         [Required]
-        public string Category { get; set; } = ""; // służbowy, prywatny, inny
+        public int CategoryId { get; set; }
+        public Categories? Category { get; set; }
 
-        public string? Subcategory { get; set; } // szef, klient, kolega, rodzina, inny
+        [ForeignKey("Subcategory")]
+        public int? SubcategoryId { get; set; }
+        public Subcategories? Subcategory { get; set; }
 
+        [ForeignKey("User")]
         [Required]
         public int UserId { get; set; }
+        public Users? User { get; set; }
     }
 }
