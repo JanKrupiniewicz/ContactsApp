@@ -3,6 +3,9 @@ using System.Text.Json;
 
 namespace ContactsApp.Server.Middleware
 {
+    /// <summary>
+    /// Middleware do obsługi błędów w aplikacji ASP.NET Core.
+    /// </summary>
     public class ErrorHandlingMiddleware
     {
         private readonly RequestDelegate _next;
