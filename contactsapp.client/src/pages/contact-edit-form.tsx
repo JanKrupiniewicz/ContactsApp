@@ -142,9 +142,6 @@ const ContactsEditForm = () => {
 
       await updateContact(contactData);
 
-      console.log("User: ", user);
-      console.log("Contact data to be created:", contactData);
-
       navigate("/contacts");
     } catch (err) {
       setError("Failed to update contact");
