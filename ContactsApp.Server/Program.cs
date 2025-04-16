@@ -7,10 +7,14 @@ using ContactsApp.Server.Repositories.Users;
 using ContactsApp.Server.Services.Auth;
 using ContactsApp.Server.Services.Categories;
 using ContactsApp.Server.Services.Contacts;
+using ContactsApp.Server.Validators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +69,12 @@ builder.Services.AddAuthentication(options =>
     };
 });
 builder.Services.AddAuthorization();
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<LoginUserDtoValidator>();
 
 var app = builder.Build();
 

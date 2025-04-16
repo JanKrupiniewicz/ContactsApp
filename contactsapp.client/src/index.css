@@ -75,6 +75,7 @@ form {
   width: 100%;
   border: "1px solid #ddd";
   border-radius: 8px;
+  min-width: 600px;
 }
 
 input,
