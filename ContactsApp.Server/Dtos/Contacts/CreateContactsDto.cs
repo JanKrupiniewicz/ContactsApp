@@ -1,5 +1,8 @@
 ﻿namespace ContactsApp.Server.Dtos.Contacts
 {
+    /// <summary>
+    /// Reprezentuje dane kontaktu do utworzenia nowego kontaktu.
+    /// </summary>
     public class CreateContactsDto
     {
         public string FirstName { get; set; } = "";

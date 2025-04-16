@@ -2,8 +2,14 @@
 
 namespace ContactsApp.Server.Mappings
 {
+    /// <summary>
+    /// Profile do mapowania obiektów związanych z kontaktami.
+    /// </summary>
     public class ContactsProfile : Profile
     {
+        /// <summary>
+        /// Inicjalizuje nową instancję klasy <see cref="ContactsProfile"/> i definiuje mapowania.
+        /// </summary>
         public ContactsProfile()
         {
             CreateMap<Models.Contacts, Dtos.Contacts.ContactsDetailedDto>()

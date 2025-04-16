@@ -2,6 +2,9 @@
 
 namespace ContactsApp.Server.Models
 {
+    /// <summary>
+    /// Reprezentuje kategorię w systemie.
+    /// </summary>
     public class Categories
     {
         [Key]

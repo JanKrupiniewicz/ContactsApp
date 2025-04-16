@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ContactsApp.Server.Models
 {
+    /// <summary>
+    /// Reprezentuje podkategorię w systemie.
+    /// </summary>
     public class Subcategories
     {
         [Key]

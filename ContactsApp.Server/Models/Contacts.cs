@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ContactsApp.Server.Models
 {
+    /// <summary>
+    /// Reprezentuje kontakt w systemie.
+    /// </summary>
     public class Contacts
     {
         [Key]

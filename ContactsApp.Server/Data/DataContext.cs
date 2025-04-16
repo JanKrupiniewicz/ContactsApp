@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ContactsApp.Server.Data
 {
+    /// <summary>
+    /// Reprezentuje kontekst bazy danych aplikacji.
+    /// </summary>
     public class DataContext : DbContext
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
@@ -14,6 +17,10 @@ namespace ContactsApp.Server.Data
         public DbSet<Categories> Categories { get; set; } = null!;
         public DbSet<Subcategories> Subcategories { get; set; } = null!;
 
+        /// <summary>
+        /// Inicjalizuje model bazy danych.
+        /// </summary>
+        /// <param name="modelBuilder">Obiekt służący do konfigurowania modelu.</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Users>().HasIndex(u => u.Email).IsUnique();

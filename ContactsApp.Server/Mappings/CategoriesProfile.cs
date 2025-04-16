@@ -4,8 +4,14 @@ using ContactsApp.Server.Models;
 
 namespace ContactsApp.Server.Mappings
 {
+    /// <summary>
+    /// Profile do mapowania obiektów związanych z kategoriami i subkategoriami.
+    /// </summary>
     public class CategoriesProfile : Profile
     {
+        /// <summary>
+        /// Inicjalizuje nową instancję klasy <see cref="CategoriesProfile"/> i definiuje mapowania.
+        /// </summary>
         public CategoriesProfile() 
         { 
             CreateMap<Categories, CategoriesDto>().ReverseMap();

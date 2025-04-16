@@ -2,6 +2,9 @@
 
 namespace ContactsApp.Server.Models
 {
+    /// <summary>
+    /// Reprezentuje użytkownika w systemie.
+    /// </summary>
     public class Users
     {
         public int Id { get; set; }

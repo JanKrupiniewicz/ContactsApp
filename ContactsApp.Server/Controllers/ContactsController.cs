@@ -13,12 +13,18 @@ namespace ContactsApp.Server.Controllers
     public class ContactsController : ControllerBase
     {
         private readonly IContactsService _contactService;
-
+        /// <summary>
+        /// Inicjalizuje nową instancję klasy <see cref="ContactsController"/> z usługą kontaktów.
+        /// </summary>
+        /// <param name="contactService">Serwis kontaktów.</param>
         public ContactsController(IContactsService contactService)
         {
             _contactService = contactService;
         }
-
+        /// <summary>
+        /// Pobiera wszystkie kontakty użytkownika.
+        /// </summary>
+        /// <returns>Lista kontaktów przypisanych do aktualnie zalogowanego użytkownika.</returns>
         [HttpGet]
         public async Task<ActionResult<List<ContactsCollectionDto>>> GetAllContacts()
         {
@@ -26,7 +32,11 @@ namespace ContactsApp.Server.Controllers
             var contacts = await _contactService.GetUserContactsAsync(int.Parse(userId));
             return Ok(contacts);
         }
-
+        /// <summary>
+        /// Pobiera kontakt na podstawie jego identyfikatora.
+        /// </summary>
+        /// <param name="id">Identyfikator kontaktu.</param>
+        /// <returns>Szczegóły kontaktu, jeśli istnieje i należy do użytkownika.</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<ContactsDetailedDto>> GetContactById(int id)
         {
@@ -40,7 +50,11 @@ namespace ContactsApp.Server.Controllers
 
             return Ok(contact);
         }
-
+        /// <summary>
+        /// Dodaje nowy kontakt do bazy danych.
+        /// </summary>
+        /// <param name="contact">Dane kontaktu do dodania.</param>
+        /// <returns>Utworzony kontakt wraz z jego identyfikatorem.</returns>
         [HttpPost]
         public async Task<ActionResult<ContactsDetailedDto>> AddContact(CreateContactsDto contact)
         {
@@ -59,7 +73,12 @@ namespace ContactsApp.Server.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
-
+        /// <summary>
+        /// Aktualizuje istniejący kontakt w bazie danych.
+        /// </summary>
+        /// <param name="id">Identyfikator kontaktu do zaktualizowania.</param>
+        /// <param name="contact">Zaktualizowane dane kontaktu.</param>
+        /// <returns>Zaktualizowany kontakt.</returns>
         [HttpPut("{id}")]
         public async Task<ActionResult<ContactsDetailedDto>> UpdateContact(int id, ContactsDetailedDto contact)
         {
@@ -80,7 +99,11 @@ namespace ContactsApp.Server.Controllers
             var updatedContact = await _contactService.UpdateContactAsync(contact);
             return Ok(updatedContact);
         }
-
+        /// <summary>
+        /// Usuwa kontakt na podstawie jego identyfikatora.
+        /// </summary>
+        /// <param name="id">Identyfikator kontaktu do usunięcia.</param>
+        /// <returns>Status operacji usunięcia.</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteContact(int id)
         {

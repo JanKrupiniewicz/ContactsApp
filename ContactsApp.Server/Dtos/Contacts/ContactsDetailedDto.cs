@@ -1,5 +1,8 @@
 ﻿namespace ContactsApp.Server.Dtos.Contacts
 {
+    /// <summary>
+    /// Reprezentuje szczegółowe dane kontaktu.
+    /// </summary>
     public class ContactsDetailedDto
     {
         public int Id { get; set; }

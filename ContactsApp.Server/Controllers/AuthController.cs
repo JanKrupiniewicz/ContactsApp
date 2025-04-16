@@ -15,12 +15,19 @@ namespace ContactsApp.Server.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
-
+        /// <summary>
+        /// Inicjalizuje nową instancję klasy <see cref="AuthController"/> z usługą autoryzacji.
+        /// </summary>
+        /// <param name="authService">Serwis autoryzacji.</param>
         public AuthController(IAuthService authService)
         {
             _authService = authService;
         }
-
+        /// <summary>
+        /// Rejestruje nowego użytkownika w systemie.
+        /// </summary>
+        /// <param name="registerUser"></param>
+        /// <returns>Status operacji rejestracji.</returns>
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterUserDto registerUser)
         {
@@ -30,7 +37,11 @@ namespace ContactsApp.Server.Controllers
 
             return Ok("User registered successfully");
         }
-
+        /// <summary>
+        /// Loguje użytkownika do systemu i generuje token JWT.
+        /// </summary>
+        /// <param name="loginUser">Dane logowania użytkownika.</param>
+        /// <returns>Token JWT i identyfikator użytkownika, jeśli logowanie zakończyło się sukcesem.</returns>
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUserDto loginUser)
         {
