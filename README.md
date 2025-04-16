@@ -2,7 +2,7 @@
 
 Prosta aplikacja webowa zbudowana w architekturze klient-serwer, umożliwiająca zarządzanie listą kontaktów. Backend stworzony w technologii ASP.NET Core udostępnia REST API, natomiast frontend oparty jest na React jako SPA (Single Page Application). Projekt powstał z wykorzystaniem szablonu "React and ASP.NET Core" dostępnego w Visual Studio.
 
-### Funkcjonalności
+## Funkcjonalności
 1. **Logowanie i rejestracja** użytkownika:
    - Walidacja danych
    - Haszowanie hasła (BCrypt)
@@ -11,7 +11,7 @@ Prosta aplikacja webowa zbudowana w architekturze klient-serwer, umożliwiająca
    - Dodawanie, edytowanie i usuwanie kontaktów
    - Kategorie i podkategorie kontaktów przechowywane sa w bazie danych
 
-### Technologie
+## Technologie
 
 **Backend**: (ASP.NET Core)
 - Język: C#
@@ -28,7 +28,7 @@ Prosta aplikacja webowa zbudowana w architekturze klient-serwer, umożliwiająca
 - UI: Domyślny szkielet
 - Obsługa JWT i localStorage
 
-### Struktura projektu
+## Struktura projektu
 - `ClientApp/` - frontend React
 - `Controllers/` - kontrolery REST API
 - `Dtos/` - klasy DTO do przesyłania danych
@@ -38,7 +38,7 @@ Prosta aplikacja webowa zbudowana w architekturze klient-serwer, umożliwiająca
 - `Repositories/` - abstrakcje dostępu do danych (UserRepository, ContactRepository)
 - `Program.cs / Startup.cs` - konfiguracja aplikacji, DI, middleware, CORS, JWT
   
-### Uruchomienie projektu
+## Uruchomienie projektu
 
 1. **Wymagania**:
    - Visual Studio 2022+ z zainstalowanym .NET SDK (np. .NET 8)
