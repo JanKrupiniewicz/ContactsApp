@@ -57,9 +57,9 @@ const LoginPage = () => {
           required
         />
         {passwordError && (
-          <div style={{ color: "red", fontSize: "14px", marginTop: "5px" }}>
+          <p style={{ color: "red", fontSize: "14px", marginTop: "5px" }}>
             {passwordError}
-          </div>
+          </p>
         )}
         <button type="submit">Login</button>
       </form>

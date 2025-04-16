@@ -1,5 +1,6 @@
 using ContactsApp.Server.Data;
 using ContactsApp.Server.Mappings;
+using ContactsApp.Server.Middleware;
 using ContactsApp.Server.Repositories.Categories;
 using ContactsApp.Server.Repositories.Contacts;
 using ContactsApp.Server.Repositories.Users;
@@ -67,6 +68,7 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 

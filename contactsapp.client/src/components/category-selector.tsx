@@ -25,7 +25,9 @@ const CategorySelector = ({
 
   // Check if the current category has subcategories
   const hasSubcategories =
-    currentCategory?.subcategories && currentCategory.subcategories.length > 0;
+    currentCategory?.subcategories &&
+    currentCategory.subcategories.length > 0 &&
+    currentCategory.name !== "Other";
 
   return (
     <>
